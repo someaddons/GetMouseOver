@@ -18,3 +18,6 @@ Target enemy to dot
 
 Innervate macro, checking mana before casting
 /run local t=GetMouseOver(1) if UnitMana(t)/UnitManaMax(t) < 0.5 then  TargetUnit(t) CastSpellByName("Innervate") end
+
+Installing: Make sure you only have one folder and remove the -master from it, so that you get the following structure:
+/Interface/Addons/GetMouseOver/GetMouseOver.toc
