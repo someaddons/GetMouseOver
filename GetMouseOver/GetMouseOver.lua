@@ -4,18 +4,20 @@ function SlashCmdList.GETMOUSEOVER(cmd)
 DEFAULT_CHAT_FRAME:AddMessage("Using the GetMouseOver(x) command:\n x indicates what kind of target you're looking for,\n 0 - Hostile 1 - Friendly 2 - both. \n Example usage: /run a=GetMouseOver(1) TargetUnit(a) CastSpellByName(\"Healing Touch\") ") 
 end
 
+-- vars
+
 function GetMouseOver(friendly)
 	-- friendly use 1 for searching friendly targets, 0 for hostile ones, 2 For Both
 
 	-- Save Frame
-	mframe = GetMouseFocus()
-	frameName = mframe:GetName()
+	local mframe = GetMouseFocus()
+	local frameName = mframe:GetName()
 
 	--No Frame(worldframe)
 	if frameName == "WorldFrame" or frameName == nil then 
 
 	-- Check Mouseover unit
-	m = "mouseover"
+	local m = "mouseover"
 		
 		-- Return Unit if searching for both
 		if friendly == 2 then
@@ -32,10 +34,10 @@ function GetMouseOver(friendly)
 				return m			
 			else
 				-- Mouseover target wrong, choose target on HP percentage
-				playerdiff = (UnitHealthMax("player") - UnitHealth("player"))/(UnitHealthMax("player")+1)
-				targetdiff = (UnitHealthMax("target") - UnitHealth("target"))/(UnitHealthMax("target")+1)
+				local playerdiff = (UnitHealthMax("player") - UnitHealth("player"))/(UnitHealthMax("player")+1)
+				local targetdiff = (UnitHealthMax("target") - UnitHealth("target"))/(UnitHealthMax("target")+1)
 			
-				if playerdiff >= targetdiff then 
+				if playerdiff >= targetdiff or not UnitIsFriend("player","target") then 
 					return "player"
 				else 
 					return "target" 
@@ -80,7 +82,7 @@ function GetMouseOver(friendly)
 		-- Check if the Unit has been saved before
 		if UnitExists(mframe.unit) then return mframe.unit end
 	
-		unit = parseFrameToTarget(frameName)
+		local unit = parseFrameToTarget(frameName)
 		
 		if unit ~= nil then
 			-- Set unit to the Frame
@@ -168,7 +170,8 @@ end
 -- Party
 if string.find(a,"party") ~= nil then 
 	-- Read number %d
-	num=string.sub(a,string.find(a,"%d"))
+	local num=string.sub(a,string.find(a,"%d"))
+	local parsedTarget = ""
 	-- Error Case, no number found
 	if num == nil then return nil end
 	
